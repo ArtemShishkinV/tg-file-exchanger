@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:alpine
+    hostname: postgres
+    container_name: file-exchanger
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=qwe
+      - POSTGRES_DB=fileExchangeDb
+    ports:
+      - "5435:5432"
+    volumes:
+      - /data:/var/lib/docker/volumes/pgdata/_data
+  rabbitmq:
+    image: rabbitmq:3.11.5-management
+    hostname: rabbitmq
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - /rabbitmq_data:/var/lib/docker/volumes/rabbitmq_data/_data
+  dispatcher:
+    build: dispatcher/./
+    container_name: file-exchanger-dispatcher
+    environment:
+      - SPRING_RABBITMQ_HOST=rabbitmq
+    ports:
+      - '8084:8084'
+    depends_on:
+      - rabbitmq
+  node:
+    build: node/./
+    container_name: file-exchanger-node
+    environment:
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/fileExchangeDb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=qwe
+    ports:
+      - '8085:8085'
+    depends_on:
+      - rabbitmq
+      - postgres

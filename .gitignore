@@ -1,0 +1,29 @@
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+.idea/checkstyle-idea.xml
+.idea/encodings.xml
+.idea/misc.xml
+.idea/vcs.xml
+
+### dispatcher ###
+/dispatcher/.mvn/
+/dispatcher/target/
+/dispatcher/mvnw
+/dispatcher/mvnw.cmd
+
+
+### node ###
+/node/.mvn/
+/node/target/
+/node/mvnw
+/node/mvnw.cmd
+
+/mail-service/src/main/resources/application.properties
