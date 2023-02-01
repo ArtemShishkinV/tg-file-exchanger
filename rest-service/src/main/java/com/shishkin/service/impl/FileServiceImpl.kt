@@ -1,6 +1,6 @@
 package com.shishkin.service.impl
 
-import com.shishkin.CryptoTool
+import com.shishkin.crypto.CryptoTool
 import com.shishkin.common.jpa.entity.BinaryContent
 import com.shishkin.common.jpa.entity.DocumentEntity
 import com.shishkin.common.jpa.entity.PhotoEntity

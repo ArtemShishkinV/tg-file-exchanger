@@ -1,4 +1,4 @@
-package com.shishkin;
+package com.shishkin.crypto;
 
 import org.hashids.Hashids;
 

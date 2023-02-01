@@ -1,4 +1,4 @@
-package com.shishkin;
+package com.shishkin.file;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

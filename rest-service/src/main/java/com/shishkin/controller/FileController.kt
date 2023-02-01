@@ -1,6 +1,6 @@
 package com.shishkin.controller
 
-import com.shishkin.FileUploadHelper
+import com.shishkin.file.FileUploadHelper
 import com.shishkin.common.jpa.entity.BinaryContent
 import com.shishkin.service.FileService
 import org.springframework.http.MediaType

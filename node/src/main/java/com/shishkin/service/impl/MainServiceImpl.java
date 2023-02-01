@@ -1,6 +1,6 @@
 package com.shishkin.service.impl;
 
-import com.shishkin.CryptoTool;
+import com.shishkin.crypto.CryptoTool;
 import com.shishkin.common.jpa.entity.UserEntity;
 import com.shishkin.common.jpa.entity.enums.UserStatus;
 import com.shishkin.common.jpa.service.UserService;
@@ -8,7 +8,6 @@ import com.shishkin.entity.RawData;
 import com.shishkin.exception.UploadFileException;
 import com.shishkin.model.EmailMessage;
 import com.shishkin.repository.RawDataRepo;
-import com.shishkin.service.EmailService;
 import com.shishkin.service.FileService;
 import com.shishkin.service.MainService;
 import com.shishkin.service.ProducerService;
@@ -16,7 +15,12 @@ import com.shishkin.service.enums.TypeCommand;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -35,7 +39,6 @@ public class MainServiceImpl implements MainService {
     private final ProducerService producerService;
     private final UserService userService;
     private final FileService fileService;
-    private final EmailService emailService;
     private final CryptoTool cryptoTool;
     @Value("${upload.domain.name}")
     private String uploadDomain;
@@ -151,6 +154,7 @@ public class MainServiceImpl implements MainService {
                     .username(user.getUserName())
                     .firstName(user.getFirstName())
                     .lastName(user.getLastName())
+                    .email("ArtemShishkinV@yandex.ru")
                     .status(UserStatus.WAIT_EMAIL_CONFIRM)
                     .isActive(true)
                     .build();
@@ -166,7 +170,15 @@ public class MainServiceImpl implements MainService {
                 user.getEmail(),
                 "Активация учетной записи",
                 getEmailConfirmLinkByUser(user));
-        emailService.send(message);
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        restTemplate.exchange("http://localhost:8087/send",
+                HttpMethod.POST,
+                new HttpEntity<>(message, headers),
+                String.class);
     }
 
     private String getEmailConfirmLinkByUser(UserEntity user) {

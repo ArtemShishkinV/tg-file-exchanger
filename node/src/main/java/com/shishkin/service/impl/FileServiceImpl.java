@@ -1,6 +1,6 @@
 package com.shishkin.service.impl;
 
-import com.shishkin.FileUploadHelper;
+import com.shishkin.file.FileUploadHelper;
 import com.shishkin.common.jpa.entity.BinaryContent;
 import com.shishkin.common.jpa.entity.DocumentEntity;
 import com.shishkin.common.jpa.entity.PhotoEntity;
